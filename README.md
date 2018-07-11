@@ -1,6 +1,8 @@
 ## 运行脚本
 
+```shell
 python3 ETHspider.py
+```
 
 ## 获取合约地址
 
