@@ -15,6 +15,8 @@ blockstart, blockend= 2103333, 2103338
 
 slice_len = 3
 
+address_set = set()  # This set is created to filter the repeated addresses
+
 threadLock = threading.RLock()
 
 client = pymongo.MongoClient("mongodb://%s:%s@192.168.10.220" % ('root', 'ATWtGZhsP4FLTYUf'), port=22223)
@@ -33,10 +35,12 @@ def get_addr_code(transactions):
         try:
             fromaddr = re.search("'from': '(.*?)'", str(content))[1]
             toaddr = re.search("'to': '(.*?)'", str(content))[1]
-            if w3.eth.getCode(toaddr)[0:3] != b'':
+            if w3.eth.getCode(toaddr)[0:3] != b'' and toaddr not in address_set:
                 contractaddr.add(toaddr)
-            if w3.eth.getCode(toaddr)[0:3] != b'':
+                address_set.add(toaddr)
+            if w3.eth.getCode(fromaddr)[0:3] != b'' and fromaddr not in address_set:
                 contractaddr.add(fromaddr)
+                address_set.add(toaddr)
         except Exception as e:
             pass
         threadLock.release()
