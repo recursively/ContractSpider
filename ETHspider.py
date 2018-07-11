@@ -58,7 +58,7 @@ def spider(blocklist):
     transactions = []
     # blocklist = list(range(blockstart, blockend))
     threadLock.acquire()
-    for i in range(int(len(range(blockstart, blockend)) / 3)):
+    for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         threadLock.acquire()
         for block in blocklist[0:slice_len]:
             transactions += (w3.eth.getBlock(block)['transactions'])
