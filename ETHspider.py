@@ -109,7 +109,7 @@ def send_email():
 
     try:
         server = smtplib.SMTP_SSL("smtp.qq.com", 465)
-        server.login(sender, "rfxudxrhntzjbfce")
+        server.login(sender, "111")
         server.sendmail(sender, receivers, message.as_string())
         server.quit()
         print("邮件发送成功")
