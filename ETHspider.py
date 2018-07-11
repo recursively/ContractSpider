@@ -4,6 +4,7 @@ import re
 import requests
 # from multiprocessing import Process, Manager
 import threading
+import pymongo
 
 
 ApiKeyToken = '6SG91UUD17M4GCBQJUYY3TKY9B8IP8KVK1'
@@ -14,16 +15,13 @@ blockstart, blockend= 2103333, 2103338
 
 slice_len = 3
 
-# number = 100
-# numlist = list(range(number))
-# for i in range(int(number / 3)):
-#     for _ in numlist[0:3]:
-#         print(_)
-#         del numlist[0:3]
-#
-# print(numlist)
-
 threadLock = threading.RLock()
+
+client = pymongo.MongoClient("mongodb://%s:%s@127.0.0.1" % ('root', 'password'), port=22223)
+
+db = client["SC"]
+
+sc = db["Sourcecode"]
 
 
 def get_addr_code(transactions):
@@ -49,8 +47,9 @@ def get_addr_code(transactions):
         try:
             res = requests.get(api, timeout=5)
             if eval(res.text)['result'][0]['SourceCode']:
-                with open('contract_code.txt', 'a') as f:
-                    f.write(addr + ':\r\n' + eval(res.text)['result'][0]['SourceCode'] + '\r\n\r\n')
+                mongodbexec(addr, eval(res.text)['result'][0]['SourceCode'])
+                # with open('contract_code.txt', 'a') as f:
+                #     f.write(addr + ':\r\n' + eval(res.text)['result'][0]['SourceCode'] + '\r\n\r\n')
         except Exception as e:
             pass
 
@@ -85,6 +84,14 @@ def multi_thread_scrape(blocklist, thread):
     for job in jobs:
         if job.is_alive():
             job.join()
+
+
+def mongodbexec(address, code):
+    getcode = {
+        'Address': address,
+        'Sourcecode': code
+    }
+    sc.insert_one(getcode)
 
 
 def main():
