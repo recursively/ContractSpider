@@ -30,7 +30,6 @@ def get_addr_code(transactions):
     contractaddr = set()
     transactionlist = re.findall("\('(.*?)'\)", str(transactions))
     for i in transactionlist:
-        threadLock.acquire()
         content = w3.eth.getTransaction(i)
         try:
             fromaddr = re.search("'from': '(.*?)'", str(content))[1]
@@ -43,7 +42,6 @@ def get_addr_code(transactions):
                 address_set.add(toaddr)
         except Exception as e:
             pass
-        threadLock.release()
 
     for addr in contractaddr:
         api = 'https://api.etherscan.io/api?module=contract&action=getsourcecode&address=%s&apikey=%s' % (
