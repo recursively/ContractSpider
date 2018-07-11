@@ -1,4 +1,6 @@
 # coding=utf-8
+from email.mime.multipart import MIMEMultipart
+import smtplib
 from web3 import Web3
 import re
 import requests
@@ -96,11 +98,31 @@ def mongodbexec(address, code):
     sc.insert_one(getcode)
 
 
+def send_email():
+    sender = '764610677@qq.com'
+    receivers = '764610677@qq.com'
+    message = MIMEMultipart('related')
+    subject = 'Scrape process finished!'
+    message['Subject'] = subject
+    message['From'] = sender
+    message['To'] = receivers
+
+    try:
+        server = smtplib.SMTP_SSL("smtp.qq.com", 465)
+        server.login(sender, "rfxudxrhntzjbfce")
+        server.sendmail(sender, receivers, message.as_string())
+        server.quit()
+        print("邮件发送成功")
+    except smtplib.SMTPException as e:
+        print(e)
+
+
 def main():
     # manager = Manager()
     blocklist = list(range(blockstart, blockend))
     multi_thread_scrape(blocklist=blocklist, thread=10)
     print('OK')
+
 
 
 if __name__ == '__main__':
