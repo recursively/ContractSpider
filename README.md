@@ -28,3 +28,7 @@ https://api.etherscan.io/api?module=contract&action=getsourcecode&address=addr&a
 ## 设置线程
 
 在main()函数中修改multi_thread_scrape()函数的thread参数可设置线程。
+
+## 发送邮件
+
+添加email_send()函数，爬取完成后自动发送邮件提醒。
