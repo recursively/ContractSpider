@@ -17,7 +17,7 @@ slice_len = 3
 
 threadLock = threading.RLock()
 
-client = pymongo.MongoClient("mongodb://%s:%s@127.0.0.1" % ('root', 'password'), port=22223)
+client = pymongo.MongoClient("mongodb://%s:%s@192.168.10.220" % ('root', 'ATWtGZhsP4FLTYUf'), port=22223)
 
 db = client["SC"]
 
@@ -98,6 +98,7 @@ def main():
     # manager = Manager()
     blocklist = list(range(blockstart, blockend))
     multi_thread_scrape(blocklist=blocklist, thread=10)
+    print('OK')
 
 
 if __name__ == '__main__':
