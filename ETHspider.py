@@ -43,7 +43,7 @@ def get_addr_code(transactions):
                 contractaddr.add(fromaddr)
                 address_set.add(toaddr)
         except Exception as e:
-            pass
+            print(e)
 
     for addr in contractaddr:
         api = 'https://api.etherscan.io/api?module=contract&action=getsourcecode&address=%s&apikey=%s' % (
@@ -55,7 +55,7 @@ def get_addr_code(transactions):
                 # with open('contract_code.txt', 'a') as f:
                 #     f.write(addr + ':\r\n' + eval(res.text)['result'][0]['SourceCode'] + '\r\n\r\n')
         except Exception as e:
-            pass
+            print(e)
 
 
 def spider(blocklist):
@@ -65,14 +65,20 @@ def spider(blocklist):
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         threadLock.acquire()
         for block in blocklist[0:slice_len]:
-            transactions += (w3.eth.getBlock(block)['transactions'])
+            try:
+                transactions += (w3.eth.getBlock(block)['transactions'])
+            except Exception as e:
+                print(e)
         get_addr_code(transactions)
         del blocklist[0:slice_len]
         transactions = []
         threadLock.release()
     threadLock.release()
     for block in blocklist:  # go over the last slice of the blocklist
-        transactions += (w3.eth.getBlock(block)['transactions'])
+        try:
+            transactions += (w3.eth.getBlock(block)['transactions'])
+        except Exception as e:
+            print(e)
     get_addr_code(transactions)
 
 
@@ -122,7 +128,6 @@ def main():
     blocklist = list(range(blockstart, blockend))
     multi_thread_scrape(blocklist=blocklist, thread=10)
     print('OK')
-
 
 
 if __name__ == '__main__':
