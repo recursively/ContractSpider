@@ -12,12 +12,14 @@ class MongodbConn(object):
         db = self.connection['SC']
         sc = db.Sourcecode
         cursor = sc.find()
-        os.mkdir('contracts')
+        if not os.path.exists('contracts'):
+            os.mkdir('contracts')
         for document in cursor:
             addr = document['Address']
             sourcecode = document['Sourcecode']
-            os.mkdir('./contracts/' + addr)
-            with open('./contracts/' + addr + '/' + addr + '.sol', 'a') as f:
+            if not os.path.exists('./contracts/' + addr):
+                os.mkdir('./contracts/' + addr)
+            with open('./contracts/' + addr + '/' + addr + '.sol', 'w') as f:
                 f.write(sourcecode)
             # files = subprocess.Popen('ls', shell=True)
             # subprocess.call('manticore ' + '-h', shell=True)
