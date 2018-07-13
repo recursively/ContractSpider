@@ -16,8 +16,8 @@ class MongodbConn(object):
         for document in cursor:
             addr = document['Address']
             sourcecode = document['Sourcecode']
-            print(document['Address'])
-            with open('./contracts/' + addr + '.sol', 'a') as f:
+            os.mkdir('./contracts/' + addr)
+            with open('./contracts/' + addr + '/' + addr + '.sol', 'a') as f:
                 f.write(sourcecode)
             # files = subprocess.Popen('ls', shell=True)
             # subprocess.call('manticore ' + '-h', shell=True)
