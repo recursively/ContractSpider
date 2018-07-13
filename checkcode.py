@@ -11,7 +11,7 @@ class MongodbConn(object):
         db = self.connection['SC']
         sc = db.Sourcecode
         cursor = sc.find()
-        subprocess.call('mkdir ./contracts')
+        subprocess.call('mkdir contracts')
         for document in cursor:
             addr = document['Address']
             sourcecode = document['Sourcecode']
