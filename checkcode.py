@@ -1,5 +1,6 @@
 import pymongo
 import subprocess
+import os
 
 
 class MongodbConn(object):
@@ -11,7 +12,7 @@ class MongodbConn(object):
         db = self.connection['SC']
         sc = db.Sourcecode
         cursor = sc.find()
-        subprocess.call('mkdir contracts')
+        os.mkdir('contracts')
         for document in cursor:
             addr = document['Address']
             sourcecode = document['Sourcecode']
