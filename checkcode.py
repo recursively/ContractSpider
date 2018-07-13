@@ -22,13 +22,15 @@ class MongodbConn(object):
             sourcecode = document['Sourcecode']
             if not os.path.exists('./contracts/' + addr):
                 os.mkdir('./contracts/' + addr)
-            with open('./contracts/' + addr + '/' + addr + '.sol', 'w') as f:
-                f.write(sourcecode)
             os.chdir('./contracts/' + addr)
+            with open(addr + '.sol', 'w') as f:
+                f.write(sourcecode)
             try:
                 subprocess.call('manticore ' + addr + '.sol', shell=True)
             except Exception as e:
                 print(e)
+            self.count += 1
+            os.chdir('../../')
 
 
 if __name__ == '__main__':
