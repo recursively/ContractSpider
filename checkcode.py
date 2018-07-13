@@ -11,11 +11,12 @@ class MongodbConn(object):
         db = self.connection['SC']
         sc = db.Sourcecode
         cursor = sc.find()
+        subprocess.call('mkdir ./contracts')
         for document in cursor:
             addr = document['Address']
             sourcecode = document['Sourcecode']
             print(document['Address'])
-            with open(addr + '.sol', 'a') as f:
+            with open('./contracts/' + addr + '.sol', 'a') as f:
                 f.write(sourcecode)
             # files = subprocess.Popen('ls', shell=True)
             # subprocess.call('manticore ' + '-h', shell=True)
