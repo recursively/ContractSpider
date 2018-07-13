@@ -65,6 +65,7 @@ def spider(blocklist):
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         threadLock.acquire()
         for block in blocklist[0:slice_len]:
+            print('[-] Now at block: ', block)
             try:
                 transactions += (w3.eth.getBlock(block)['transactions'])
             except Exception as e:
