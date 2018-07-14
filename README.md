@@ -1,8 +1,9 @@
 ## 运行脚本
 
 ```shell
-python3 ETHspider.py
+python3.6 ETHspider.py
 ```
+该脚本只支持python3.6以上版本
 
 ## 获取合约地址
 
@@ -32,3 +33,31 @@ https://api.etherscan.io/api?module=contract&action=getsourcecode&address=addr&a
 ## 发送邮件
 
 添加email_send()函数，爬取完成后自动发送邮件提醒。
+
+## 扫描环境搭建
+
+安装solidity compiler:
+
+```shell
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install solc
+sudo pip2 install manticore
+```
+
+## 批量扫描代码
+
+运行脚本：
+
+```shell
+python3 checkcode.py
+```
+
+运行脚本后会在根目录下创建contracts文件夹，里面存放合约代码和代码扫描结果。
+
+## 调用测试工具
+
+```shell
+$ manticore ./path/to/contract.sol  # runs, and creates a mcore_* directory with analysis results
+```
