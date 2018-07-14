@@ -26,11 +26,11 @@ class MongodbConn(object):
                 with open(addr + '.sol', 'w') as f:
                     f.write(sourcecode)
                 try:
-                    subprocess.call('manticore ' + addr + '.sol', shell=True, timeout=300)
+                    subprocess.call('exec manticore ' + addr + '.sol', shell=True, timeout=300)
                 except Exception as e:
                     print(e)
-                self.count += 1
                 os.chdir('../../')
+            self.count += 1
 
 
 if __name__ == '__main__':
