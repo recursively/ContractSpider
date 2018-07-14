@@ -26,7 +26,7 @@ class MongodbConn(object):
                 with open(addr + '.sol', 'w') as f:
                     f.write(sourcecode)
                 try:
-                    subprocess.call('echo ' + str(self.count) + '/' + str(total) + '&& exec manticore ' + addr + '.sol', shell=True, timeout=300)
+                    subprocess.call('manticore ' + addr + '.sol', shell=True, timeout=300)
                 except Exception as e:
                     print(e)
                 self.count += 1
