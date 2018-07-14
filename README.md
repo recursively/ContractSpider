@@ -43,6 +43,11 @@ sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install solc
+```
+
+安装manticore测试工具：
+
+```shell
 sudo pip2 install manticore
 ```
 
