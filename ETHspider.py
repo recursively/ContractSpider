@@ -11,7 +11,7 @@ import pymongo
 
 ApiKeyToken = '6SG91UUD17M4GCBQJUYY3TKY9B8IP8KVK1'
 
-w3 = Web3(Web3.HTTPProvider("http://192.168.10.210:8545"))
+w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/po1MoDRgjDD0EPchxiOS"))
 
 blockstart, blockend= 2103333, 2103338
 
