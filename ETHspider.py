@@ -128,6 +128,7 @@ def main():
     # manager = Manager()
     blocklist = list(range(blockstart, blockend))
     multi_thread_scrape(blocklist=blocklist, thread=10)
+    send_email()
     print('OK')
 
 
