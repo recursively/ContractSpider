@@ -60,9 +60,9 @@ def get_addr_code(transactions):
 
 def spider(blocklist):
     transactions = []
-    # threadLock.acquire()
+    threadLock.acquire()
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
-        # threadLock.acquire()
+        threadLock.acquire()
         for block in blocklist[0:slice_len]:
             print('[-] Now at block: ', block)
             try:
@@ -72,8 +72,8 @@ def spider(blocklist):
         get_addr_code(transactions)
         del blocklist[0:slice_len]
         transactions = []
-        # threadLock.release()
-    # threadLock.release()
+        threadLock.release()
+    threadLock.release()
     for block in blocklist:  # go over the last slice of the blocklist
         try:
             transactions += (w3.eth.getBlock(block)['transactions'])
