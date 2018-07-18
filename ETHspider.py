@@ -4,7 +4,7 @@ import smtplib
 from web3 import Web3
 import re
 import requests
-# from multiprocessing import Process, Manager
+from multiprocessing import Process, Manager
 import threading
 import pymongo
 
@@ -60,10 +60,9 @@ def get_addr_code(transactions):
 
 def spider(blocklist):
     transactions = []
-    # blocklist = list(range(blockstart, blockend))
-    threadLock.acquire()
+    # threadLock.acquire()
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
-        threadLock.acquire()
+        # threadLock.acquire()
         for block in blocklist[0:slice_len]:
             print('[-] Now at block: ', block)
             try:
@@ -73,8 +72,8 @@ def spider(blocklist):
         get_addr_code(transactions)
         del blocklist[0:slice_len]
         transactions = []
-        threadLock.release()
-    threadLock.release()
+        # threadLock.release()
+    # threadLock.release()
     for block in blocklist:  # go over the last slice of the blocklist
         try:
             transactions += (w3.eth.getBlock(block)['transactions'])
@@ -87,7 +86,8 @@ def multi_thread_scrape(blocklist, thread):
 
     jobs = []
     for i in range(thread):
-        p = threading.Thread(target=spider, args=(blocklist, ))
+        # p = threading.Thread(target=spider, args=(blocklist, ))
+        p = Process(target=spider, args=(blocklist, ))
         jobs.append(p)
         p.start()
 
@@ -125,8 +125,9 @@ def send_email():
 
 
 def main():
-    # manager = Manager()
-    blocklist = list(range(blockstart, blockend))
+    manager = Manager()
+    blocklist = manager.list(range(blockstart, blockend))
+    # blocklist = list(range(blockstart, blockend))
     multi_thread_scrape(blocklist=blocklist, thread=10)
     send_email()
     print('OK')
