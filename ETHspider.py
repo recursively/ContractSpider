@@ -5,7 +5,7 @@ from web3 import Web3
 import re
 import requests
 from multiprocessing import Process, Manager, RLock
-import threading
+# import threading
 import pymongo
 
 
@@ -20,6 +20,8 @@ slice_len = 3
 address_set = set()  # This set is created to filter the repeated addresses
 
 # threadLock = threading.RLock()
+
+processLock = RLock()
 
 client = pymongo.MongoClient("mongodb://%s:%s@192.168.10.220" % ('root', 'ATWtGZhsP4FLTYUf'), port=22223)
 
@@ -63,7 +65,7 @@ def spider(blocklist):
     # threadLock.acquire()
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         # threadLock.acquire()
-        RLock.acquire()
+        processLock.acquire()
         for block in blocklist[0:slice_len]:
             print('[-] Now at block: ', block)
             try:
@@ -73,7 +75,7 @@ def spider(blocklist):
         get_addr_code(transactions)
         del blocklist[0:slice_len]
         transactions = []
-        RLock.release()
+        processLock.release()
         # threadLock.release()
     # threadLock.release()
     for block in blocklist:  # go over the last slice of the blocklist
