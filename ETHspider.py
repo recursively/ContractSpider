@@ -60,13 +60,13 @@ def get_addr_code(transactions):
             print(e)
 
 
-def spider(blocklist):
+def spider(processLock, blocklist):
     transactions = []
     # threadLock.acquire()
     processLock.acquire()
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         # threadLock.acquire()
-        processLock.acquire()
+        # processLock.acquire()
         for block in blocklist[0:slice_len]:
             print('[-] Now at block: ', block)
             try:
@@ -76,7 +76,7 @@ def spider(blocklist):
         get_addr_code(transactions)
         del blocklist[0:slice_len]
         transactions = []
-        processLock.release()
+        # processLock.release()
         # threadLock.release()
     # threadLock.release()
     processLock.release()
@@ -93,7 +93,7 @@ def multi_thread_scrape(blocklist, thread):
     jobs = []
     for i in range(thread):
         # p = threading.Thread(target=spider, args=(blocklist, ))
-        p = Process(target=spider, args=(blocklist, ))
+        p = Process(target=spider, args=(processLock, blocklist, ))
         jobs.append(p)
         p.start()
 
@@ -134,7 +134,7 @@ def main():
     manager = Manager()
     blocklist = manager.list(range(blockstart, blockend))
     # blocklist = list(range(blockstart, blockend))
-    multi_thread_scrape(blocklist=blocklist, thread=10)
+    multi_thread_scrape(blocklist=blocklist, thread=20)
     send_email()
     print('OK')
 
