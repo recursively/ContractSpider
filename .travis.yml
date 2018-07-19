@@ -3,7 +3,7 @@ language: python
 python:
   - 3.6
 install:
-  - pip install -r tests/requirements.txt
+  - pip install -r test/requirements.txt
 before_script:
   - echo "mainnet_url = $mainnet_url" > config.py
   - echo "ApiKeyToken = $ApiKeyToken" >> config.py
