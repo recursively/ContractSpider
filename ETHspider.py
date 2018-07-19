@@ -60,7 +60,7 @@ def get_addr_code(transactions):
             print(e)
 
 
-def spider(processLock, blocklist):
+def spider(blocklist):
     transactions = []
     threadLock.acquire()
     # processLock.acquire()
