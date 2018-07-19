@@ -7,7 +7,8 @@ import requests
 from multiprocessing import Process, Manager, RLock
 # import threading
 # import pymongo
-from config import ApiKeyToken, mainnet_url, passwd, localurl
+# from config import ApiKeyToken, mainnet_url, passwd, localurl
+from config import ApiKeyToken, mainnet_url
 
 
 w3 = Web3(Web3.HTTPProvider(mainnet_url))
