@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/recursively/ContractSpider.svg?branch=master)](https://travis-ci.org/recursively/ContractSpider)
+
 ## 运行脚本
 
 ```shell
