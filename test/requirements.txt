@@ -1,3 +1,4 @@
 pytest-cov
 web3
 requests
+codecov
