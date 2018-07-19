@@ -1,5 +1,5 @@
 from multiprocessing import Manager
-from ETHspider import multi_thread_scrape
+from ..ETHspider import multi_thread_scrape
 
 blockstart, blockend = 2103333, 2103338
 
