@@ -7,11 +7,10 @@ import requests
 from multiprocessing import Process, Manager, RLock
 # import threading
 import pymongo
+from config import ApiKeyToken, mainnet_url, passwd, localurl
 
 
-ApiKeyToken = '6SG91UUD17M4GCBQJUYY3TKY9B8IP8KVK1'
-
-w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/po1MoDRgjDD0EPchxiOS"))
+w3 = Web3(Web3.HTTPProvider(mainnet_url))
 
 blockstart, blockend= 2103333, 2103338
 
@@ -23,11 +22,11 @@ address_set = set()  # This set is created to filter the repeated addresses
 
 processLock = RLock()
 
-client = pymongo.MongoClient("mongodb://%s:%s@192.168.10.220" % ('root', 'ATWtGZhsP4FLTYUf'), port=22223)
+# client = pymongo.MongoClient("mongodb://%s:%s@%s" % ('root', passwd, localurl), port=22223)
 
-db = client["SC"]
-
-sc = db["Sourcecode"]
+# db = client["SC"]
+#
+# sc = db["Sourcecode"]
 
 
 def get_addr_code(transactions):
@@ -53,9 +52,9 @@ def get_addr_code(transactions):
         try:
             res = requests.get(api, timeout=5)
             if eval(res.text)['result'][0]['SourceCode']:
-                mongodbexec(addr, eval(res.text)['result'][0]['SourceCode'])
-                # with open('contract_code.txt', 'a') as f:
-                #     f.write(addr + ':\r\n' + eval(res.text)['result'][0]['SourceCode'] + '\r\n\r\n')
+                # mongodbexec(addr, eval(res.text)['result'][0]['SourceCode'])
+                with open('contract_code.txt', 'a') as f:
+                    f.write(addr + ':\r\n' + eval(res.text)['result'][0]['SourceCode'] + '\r\n\r\n')
         except Exception as e:
             print(e)
 
@@ -66,7 +65,6 @@ def spider(processLock, blocklist):
     processLock.acquire()
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         # threadLock.acquire()
-        # processLock.acquire()
         for block in blocklist[0:slice_len]:
             print('[-] Now at block: ', block)
             try:
@@ -76,7 +74,6 @@ def spider(processLock, blocklist):
         get_addr_code(transactions)
         del blocklist[0:slice_len]
         transactions = []
-        # processLock.release()
         # threadLock.release()
     # threadLock.release()
     processLock.release()
@@ -101,6 +98,8 @@ def multi_thread_scrape(blocklist, thread):
     for job in jobs:
         if job.is_alive():
             job.join()
+
+    return 'finished'
 
 
 def mongodbexec(address, code):

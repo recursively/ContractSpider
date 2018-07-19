@@ -1,12 +1,13 @@
 import pymongo
 import subprocess
 import os
+from config import passwd
 
 
 class MongodbConn(object):
 
     def __init__(self):
-        self.connection = pymongo.MongoClient("mongodb://%s:%s@192.168.10.220" % ('root', 'ATWtGZhsP4FLTYUf'), port=22223)
+        self.connection = pymongo.MongoClient("mongodb://%s:%s@192.168.10.220" % ('root', passwd), port=22223)
         self.count = 1
 
     def run(self):
