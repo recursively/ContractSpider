@@ -1,4 +1,6 @@
 from multiprocessing import Manager
+import os
+print(os.getcwd())
 from ..ETHspider import multi_thread_scrape
 
 blockstart, blockend = 2103333, 2103338
