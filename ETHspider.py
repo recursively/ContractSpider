@@ -6,7 +6,7 @@ import re
 import requests
 from multiprocessing import Process, Manager, RLock
 # import threading
-import pymongo
+# import pymongo
 from config import ApiKeyToken, mainnet_url, passwd, localurl
 
 
