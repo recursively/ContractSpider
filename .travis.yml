@@ -7,6 +7,6 @@ install:
 before_script:
   - echo "mainnet_url = $mainnet_url" > config.py
   - echo "ApiKeyToken = $ApiKeyToken" >> config.py
-  - cat config.py
+  - export PYTHONPATH='.'
 script:
   - pytest test
