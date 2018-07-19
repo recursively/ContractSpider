@@ -4,8 +4,8 @@ import smtplib
 from web3 import Web3
 import re
 import requests
-from multiprocessing import Process, Manager, RLock
-# import threading
+# from multiprocessing import Process, Manager, RLock
+import threading
 # import pymongo
 # from config import ApiKeyToken, mainnet_url, passwd, localurl
 from config import ApiKeyToken, mainnet_url
@@ -19,9 +19,9 @@ slice_len = 3
 
 address_set = set()  # This set is created to filter the repeated addresses
 
-# threadLock = threading.RLock()
+threadLock = threading.RLock()
 
-processLock = RLock()
+# processLock = RLock()
 
 # client = pymongo.MongoClient("mongodb://%s:%s@%s" % ('root', passwd, localurl), port=22223)
 
@@ -62,8 +62,8 @@ def get_addr_code(transactions):
 
 def spider(processLock, blocklist):
     transactions = []
-    # threadLock.acquire()
-    processLock.acquire()
+    threadLock.acquire()
+    # processLock.acquire()
     for i in range(int(len(range(blockstart, blockend)) / slice_len)):
         # threadLock.acquire()
         for block in blocklist[0:slice_len]:
@@ -76,8 +76,8 @@ def spider(processLock, blocklist):
         del blocklist[0:slice_len]
         transactions = []
         # threadLock.release()
-    # threadLock.release()
-    processLock.release()
+    threadLock.release()
+    # processLock.release()
     for block in blocklist:  # go over the last slice of the blocklist
         try:
             transactions += (w3.eth.getBlock(block)['transactions'])
@@ -90,8 +90,8 @@ def multi_thread_scrape(blocklist, thread):
 
     jobs = []
     for i in range(thread):
-        # p = threading.Thread(target=spider, args=(blocklist, ))
-        p = Process(target=spider, args=(processLock, blocklist, ))
+        p = threading.Thread(target=spider, args=(blocklist, ))
+        # p = Process(target=spider, args=(processLock, blocklist, ))
         jobs.append(p)
         p.start()
 
@@ -131,10 +131,10 @@ def send_email():
 
 
 def main():
-    manager = Manager()
-    blocklist = manager.list(range(blockstart, blockend))
-    # blocklist = list(range(blockstart, blockend))
-    multi_thread_scrape(blocklist=blocklist, thread=20)
+    # manager = Manager()
+    # blocklist = manager.list(range(blockstart, blockend))
+    blocklist = list(range(blockstart, blockend))
+    multi_thread_scrape(blocklist=blocklist, thread=50)
     send_email()
     print('OK')
 
