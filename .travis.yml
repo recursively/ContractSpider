@@ -5,8 +5,8 @@ python:
 install:
   - pip install -r test/requirements.txt
 before_script:
-  - echo "mainnet_url = $mainnet_url" > config.py
-  - echo "ApiKeyToken = $ApiKeyToken" >> config.py
+  - echo "mainnet_url = '$mainnet_url'" > config.py
+  - echo "ApiKeyToken = '$ApiKeyToken'" >> config.py
   - export PYTHONPATH='.'
 script:
   - pytest test
