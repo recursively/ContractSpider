@@ -112,8 +112,8 @@ def mongodbexec(address, code):
 
 
 def send_email():
-    sender = '764610677@qq.com'
-    receivers = '764610677@qq.com'
+    sender = '111@qq.com'
+    receivers = '111@qq.com'
     message = MIMEMultipart('related')
     subject = 'Scrape process finished!'
     message['Subject'] = subject
@@ -135,7 +135,7 @@ def main():
     # blocklist = manager.list(range(blockstart, blockend))
     blocklist = list(range(blockstart, blockend))
     multi_thread_scrape(blocklist=blocklist, thread=50)
-    send_email()
+    # send_email()
     print('OK')
 
 
