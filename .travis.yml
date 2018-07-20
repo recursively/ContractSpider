@@ -9,6 +9,6 @@ before_script:
   - echo "ApiKeyToken = '$ApiKeyToken'" >> config.py
   - export PYTHONPATH='.'
 script:
-  - pytest --cov=./ETHspider.py test
+  - pytest --cov=./ test
 after_success:
   - codecov
