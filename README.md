@@ -26,7 +26,7 @@ https://api.etherscan.io/api?module=contract&action=getsourcecode&address=addr&a
 修改address参数和apikey来查询指定合约的代码，apikey可以注册Etherscan账户后获得。如果是非验证合约则无法获取对应代码。
 
 在Etherscan官网上查看API使用情况：
-![](http://i38.photobucket.com/albums/e117/bucketuser111/Blog/apistat_zps8p6hde4r.png)
+![](https://media.githubusercontent.com/media/recursively/recursively.github.io/hexo/source/pics/3-1.png)
 
 ## 设置线程
 
